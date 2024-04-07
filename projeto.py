@@ -7,8 +7,20 @@ def excluir_pessoa():
     # Use a função print_pessoa(pessoa) para exibir a pessoa a ser excluida
     # "Você deseja excluir essa pessoa?"
     # Caso ela não seja encontrada, avisar ao usuário "Pessoa nao encontrada"
- return
-  
+    pessoas = ler_dados_do_arquivo()
+    nome_pessoa = input("insira o nome da pessoa que voce quer excluir: ")
+    pessoa = busca_pessoa(nome_pessoa, pessoas)
+    if pessoa is None:
+       print("pessoa nao encontrada")
+       return
+    confirmacao = input("voce quer excluir s ou n: ")
+    if confirmacao == "s":
+        pessoas.remove(pessoa)
+        salvar_dados_no_arquivo(pessoas)
+        print("pessoa excluida com sucesso")
+    else:
+       print("pessoa nao excluida")
+    return pessoas
 
 def editar_pessoa():
     # Faça uma função que edite uma pessoa no sistema
@@ -17,23 +29,49 @@ def editar_pessoa():
     # Use a função print_pessoa(pessoa) para exibir a pessoa a ser editada
     # Use a função editar_dados_pessoa(pessoa_editar, novo_nome, novo_idade, novo_email, novo_telefone) passando
     # os novos dados a serem cadastrados nesta pessoa
-    return 
-
+    nome_pessoa = input("insira o nome da pessoa que voce quer editar?")
+    pessoas = ler_dados_do_arquivo()
+    pessoa = busca_pessoa(nome_pessoa, pessoas)
+    if pessoa is None:
+       print("pessoa não encontrado")
+       return
+    print("pessoa encontrada")
+    novo_nome =input("insira seu novo nome: ")
+    novo_idade =input("insira sua nova idade: ")
+    novo_email =input("insira seu novo email: ")
+    novo_telefone =input("insira seu novo telefone: ")
+    editar_dados_pessoa(pessoa,novo_nome,novo_idade,novo_email,novo_telefone)
+    salvar_dados_no_arquivo(pessoas)
+    print("seus dados foram autualizado")
 def adicionar_pessoa():
     # Faça uma função que adicione uma pessoa no sistema, pedindo o nome, idade, email e telefone
     # Caso algum dos campos esteja vazio, a função deve printar "Preencha todos os campos" e o usuário deve digitá-lo novamente
     # Use a função  salvar_pessoa(nome, idade, email, telefone): 
-    return
-
+    nome = input("insira seu nome")
+    idade = input("insira sua idade")
+    email = input("insira seu email")
+    telefone = input("insira seu telefone")   
+    if nome == "" or idade == "" or email == "" or telefone == "":
+       print("preencha todos os campos")
+       adicionar_pessoa()
+    else:
+       salvar_pessoa(nome,idade,email,telefone)
+      
+       return 
+       
 def listar_pessoas():
     # Faça uma função que liste todas as pessoas cadastradas no sistema
     # Use a função ler_dados_do_arquivo() para receber uma lista de pessoas
     # Use a função print_pessoa(pessoa) , passando uma pessoa como parâmetro
+  pessoas_listadas = ler_dados_do_arquivo()
+  for pessoa in  pessoas_listadas:
+   print_pessoa(pessoa)
 
-    return    
+  return    
 
 
 def principal():
+
     #Faça uma função que dê 5 opções para o usuário:
 
     #1 - Listar pessoas
@@ -69,7 +107,8 @@ def principal():
         excluir_pessoa()
     elif usuario == "0":
         print("voce saiu da lista")
-    else: print("opção invalida")
+    else: 
+        print("opção invalida")
     return
 
 principal()
